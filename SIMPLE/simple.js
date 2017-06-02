@@ -1,5 +1,4 @@
 // Syntax including expressions and statments of 'Simple' programming language.
-// Potential issues - do expressions still work in the machine without returning [exp, environment]?
 
 // Expressions
 
@@ -14,7 +13,7 @@ class Number {
 	}
 
 	toString() {
-		return `<<${this.value}>>`;
+		return `<${this.value}>`;
 	}
 }
 
@@ -30,7 +29,7 @@ class Add {
 	}
 
 	toString() {
-		return `<<${this.left} + ${this.right}>>`;
+		return `<${this.left} + ${this.right}>`;
 	}
 
 	reduce(environment) {
@@ -56,7 +55,7 @@ class Multiply {
 	}
 
 	toString() {
-		return `<<${this.left} * ${this.right}>>`;
+		return `<${this.left} * ${this.right}>`;
 	}
 
 	reduce(environment) {
@@ -82,7 +81,7 @@ class Subtract {
 	}
 
 	toString() {
-		return `<<${this.left} - ${this.right}>>`;
+		return `<${this.left} - ${this.right}>`;
 	}
 
 	reduce(environment) {
@@ -108,7 +107,7 @@ class Divide {
 	}
 
 	toString() {
-		return `<<${this.left} / ${this.right}>>`;
+		return `<${this.left} / ${this.right}>`;
 	}
 
 	reduce(environment) {
@@ -134,7 +133,7 @@ class Boolean {
 	}
 
 	toString() {
-		return `<<${this.value}>>`;
+		return `<${this.value}>`;
 	}
 }
 
@@ -150,7 +149,7 @@ class LessThan {
 	}
 
 	toString() {
-		return `<<${this.left} < ${this.right}>>`;
+		return `<${this.left} < ${this.right}>`;
 	}
 
 	reduce(environment) {
@@ -176,7 +175,7 @@ class GreaterThan {
 	}
 
 	toString() {
-		return `<<${this.left} > ${this.right}>>`;
+		return `<${this.left} > ${this.right}>`;
 	}
 
 	reduce(environment) {
@@ -201,7 +200,7 @@ class Variable {
 	}
 
 	toString() {
-		return `<<${this.value}>>`;
+		return `<${this.value}>`;
 	}
 
 	reduce(environment) {
@@ -223,7 +222,7 @@ class doNothing {
 	}
 
 	toString() {
-		return `<<${this.value}>>`;
+		return `<${this.value}>`;
 	}
 }
 
@@ -239,7 +238,7 @@ class Assign {
 	}
 
 	toString() {
-		return `<<${this.name} = ${this.expression}>>`;
+		return `<${this.name} = ${this.expression}>`;
 	}
 
 	reduce(environment) {
@@ -268,7 +267,7 @@ class If {
 	}
 
 	toString() {
-		return `<<If ${this.condition} { ${this.consequence} } else { ${this.alternative} }>>`;
+		return `<If ${this.condition} { ${this.consequence} } else { ${this.alternative} }>`;
 	}
 
 	reduce(environment) {
