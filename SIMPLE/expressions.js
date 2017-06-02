@@ -44,3 +44,9 @@ class Multiply {
 		return `<<${this.left} * ${this.right}>>`;
 	}
 }
+
+module.exports = {
+	Number,
+	Add,
+	Multiply
+}
