@@ -3,6 +3,7 @@
 class Number {
 	constructor(value) {
 		this.value = value
+		this.reducible = false;
 	}
 
 	inspect() {
@@ -18,6 +19,7 @@ class Add {
 	constructor(left, right) {
 		this.left = left;
 		this.right = right;
+		this.reducible = true;
 	}
 
 	inspect() {
@@ -27,12 +29,23 @@ class Add {
 	toString() {
 		return `<<${this.left} + ${this.right}>>`;
 	}
+
+	reduce() {
+		if (this.left.reducible) {
+			return new Add(this.left.reduce(), this.right)
+		} else if (this.right.reducible) {
+			return new Add(this.left, this.right.reduce())
+		} else {
+			return new Number(this.left.value + this.right.value)
+		}
+	}
 }
 
 class Multiply {
 	constructor(left, right) {
 		this.left = left;
 		this.right = right;
+		this.reducible = true;
 	}
 
 	inspect() {
@@ -42,6 +55,16 @@ class Multiply {
 	toString() {
 		// return `<<${this.left * this.right}>>`;
 		return `<<${this.left} * ${this.right}>>`;
+	}
+
+	reduce() {
+		if (this.left.reducible) {
+			return new Multiply(this.left.reduce(), this.right)
+		} else if (this.right.reducible) {
+			return new Multiply(this.left, this.right.reduce())
+		} else {
+			return new Number(this.left.value * this.right.value)
+		}
 	}
 }
 
