@@ -1,4 +1,3 @@
-var expression = new ex.Add(new ex.Multiply(new ex.Number(12), new ex.Number(10)), new ex.Multiply(new ex.Number(8), new ex.Number(2)))
 
 
-var ex = require('./SIMPLE/expressions.js'), expr = new ex.Divide(new ex.Number(3700), new ex.Add(new ex.Variable('x'), new ex.Variable('y'))), envir = {x: new ex.Number(3), y: new ex.Number(34)}, mac = new ex.Machine(expr, envir);
+var sim = require('./SIMPLE/simple.js'), expr = new sim.Divide(new sim.Number(3700), new sim.Add(new sim.Variable('x'), new sim.Variable('y'))), envir = {x: new sim.Number(3), y: new sim.Number(34)}, mac = new sim.Machine(expr, envir);

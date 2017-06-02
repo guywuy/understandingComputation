@@ -1,4 +1,4 @@
-// SIMPLE expressions
+// Expressions
 
 class Number {
 	constructor(value) {
@@ -206,22 +206,69 @@ class Variable {
 	}
 }
 
-class Machine {
-	constructor(expression, environment) {
+// Statements
+
+class doNothing {
+	constructor() {
+		this.value = "Do-nothing";
+		this.reducible = false;
+	}
+
+	inspect() {
+		return this.toString();
+	}
+
+	toString() {
+		return `<<${this.value}>>`;
+	}
+}
+
+class Assign {
+	constructor(name, expression) {
+		this.name = name;
 		this.expression = expression;
+		this.reducible = true;
+	}
+
+	inspect() {
+		return this.toString();
+	}
+
+	toString() {
+		return `<<${this.name} = ${this.expression}>>`;
+	}
+
+	reduce(environment) {
+		if (this.expression.reducible) {
+			return [new Assign(this.name, this.expression.reduce(environment)), environment];
+		} else {
+			let newEnvir = Object.assign({}, environment, {
+				[this.name]: this.expression
+			});
+			console.log("newEnvir " + newEnvir);
+			return [new doNothing(), newEnvir];
+		}
+	}
+}
+
+// Machine
+
+class Machine {
+	constructor(statement, environment) {
+		this.statement = statement;
 		this.environment = environment;
 	}
 
 	step() {
-		this.expression = this.expression.reduce(this.environment)
+		[this.statement, this.environment] = this.statement.reduce(this.environment)
 	}
 
 	run() {
-		while (this.expression.reducible) {
-			console.log(this.expression);
+		while (this.statement.reducible) {
+			console.log(this.statement, this.environment);
 			this.step();
 		}
-		console.log(this.expression)
+		console.log(this.statement)
 	}
 }
 
@@ -235,5 +282,7 @@ module.exports = {
 	LessThan,
 	GreaterThan,
 	Variable,
+	doNothing,
+	Assign,
 	Machine
 }
