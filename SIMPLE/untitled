@@ -1,0 +1,4 @@
+var expression = new ex.Add(new ex.Multiply(new ex.Number(12), new ex.Number(10)), new ex.Multiply(new ex.Number(8), new ex.Number(2)))
+
+
+var ex = require('./SIMPLE/expressions.js'), expr = new ex.Divide(new ex.Number(3700), new ex.Add(new ex.Variable('x'), new ex.Variable('y'))), envir = {x: new ex.Number(3), y: new ex.Number(34)}, mac = new ex.Machine(expr, envir);
