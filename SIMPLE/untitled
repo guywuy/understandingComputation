@@ -1,3 +1,14 @@
 
 
 var sim = require('./SIMPLE/simple.js'), expr = new sim.Divide(new sim.Number(3700), new sim.Add(new sim.Variable('x'), new sim.Variable('y'))), envir = {x: new sim.Number(3), y: new sim.Number(34)}, mac = new sim.Machine(expr, envir);
+
+
+
+
+ var statement = new sim.Assign("x", new sim.Add(new sim.Variable("x"), new sim.Number(2)))
+
+
+var env = {x: new sim.Boolean('true')}
+ var statement = new sim.If(new sim.Variable("x"), new sim.Assign(new sim.Variable("y"), new sim.Number(2)), new sim.Assign(new sim.Variable("y"), new sim.Number(1)));
+
+ var mac = new sim.Machine(statement, env).run()

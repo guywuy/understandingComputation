@@ -1,3 +1,6 @@
+// Syntax including expressions and statments of 'Simple' programming language.
+// Potential issues - do expressions still work in the machine without returning [exp, environment]?
+
 // Expressions
 
 class Number {
@@ -208,6 +211,7 @@ class Variable {
 
 // Statements
 
+//Might need to add == function
 class doNothing {
 	constructor() {
 		this.value = "Do-nothing";
@@ -251,6 +255,34 @@ class Assign {
 	}
 }
 
+class If {
+	constructor(condition, consequence, alternative) {
+		this.condition = condition;
+		this.consequence = consequence;
+		this.alternative = alternative;
+		this.reducible = true;
+	}
+
+	inspect() {
+		return this.toString();
+	}
+
+	toString() {
+		return `<<If ${this.condition} { ${this.consequence} } else { ${this.alternative} }>>`;
+	}
+
+	reduce(environment) {
+		if (this.condition.reducible) {
+			return [new If(this.condition.reduce(environment), this.consequence, this.alternative), environment];
+		} else if (this.condition.value == new Boolean('true').value) {
+			return [this.consequence, environment]
+		} else {
+			return [this.alternative, environment]
+		}
+	}
+
+}
+
 // Machine
 
 class Machine {
@@ -284,5 +316,6 @@ module.exports = {
 	Variable,
 	doNothing,
 	Assign,
+	If,
 	Machine
 }
