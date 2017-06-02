@@ -68,8 +68,27 @@ class Multiply {
 	}
 }
 
+class Machine {
+	constructor(expression) {
+		this.expression = expression;
+	}
+
+	step() {
+		this.expression = this.expression.reduce()
+	}
+
+	run() {
+		while (this.expression.reducible) {
+			console.log(this.expression);
+			this.step();
+		}
+		console.log(expression)
+	}
+}
+
 module.exports = {
 	Number,
 	Add,
-	Multiply
+	Multiply,
+	Machine
 }
