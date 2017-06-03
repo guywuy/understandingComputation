@@ -17,8 +17,19 @@ var env = {x: new sim.Boolean('true')}
 var stat = new sim.Add(new sim.Number(12), new sim.Number(14))
 
 
-x = (x*4)+(12/3)
 
+
+x = (x*4)+(12/3)
 
 var statement = new sim.Assign(new sim.Variable("x"), new sim.Add(new sim.Multiply(new sim.Variable("x"), new sim.Number(4)), new sim.Divide(new sim.Number(12), new sim.Number(3))))
 var env = {x: new sim.Number(3)}
+
+
+
+
+// Sequence
+
+x = 1+1;
+y = x+3;
+
+var statement = new sim.Sequence(new sim.Assign('x', new sim.Add(new sim.Number(1), new sim.Number(1))), new sim.Assign('y', new sim.Add(new sim.Variable("x"), new sim.Number(3))));

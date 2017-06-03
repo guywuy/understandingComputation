@@ -211,7 +211,7 @@ class Variable {
 // Statements
 
 //Might need to add == function
-class doNothing {
+class DoNothing {
 	constructor() {
 		this.value = "Do-nothing";
 		this.reducible = false;
@@ -248,8 +248,8 @@ class Assign {
 			let newEnvir = Object.assign({}, environment, {
 				[this.name]: this.expression
 			});
-			console.log("newEnvir " + newEnvir);
-			return [new doNothing(), newEnvir];
+			// console.log("newEnvir " + newEnvir);
+			return [new DoNothing(), newEnvir];
 		}
 	}
 }
@@ -279,7 +279,31 @@ class If {
 			return [this.alternative, environment]
 		}
 	}
+}
 
+class Sequence {
+	constructor(first, second) {
+		this.first = first;
+		this.second = second;
+		this.reducible = true;
+	}
+
+	inspect() {
+		return this.toString();
+	}
+
+	toString() {
+			return `<${this.first}; ${this.second};>`;
+		}
+		// Maybe specify in else return to return reducedEnv only if it's not null/undefined
+	reduce(environment) {
+		if (this.first instanceof DoNothing) {
+			return [this.second, environment];
+		} else {
+			let [reducedFirst, reducedEnv] = this.first.reduce(environment);
+			return [new Sequence(reducedFirst, this.second), reducedEnv];
+		}
+	}
 }
 
 // Machine
@@ -313,8 +337,9 @@ module.exports = {
 	LessThan,
 	GreaterThan,
 	Variable,
-	doNothing,
+	DoNothing,
 	Assign,
 	If,
+	Sequence,
 	Machine
 }
