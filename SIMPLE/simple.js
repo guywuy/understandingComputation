@@ -135,6 +135,10 @@ class Boolean {
 	toString() {
 		return `<${this.value}>`;
 	}
+
+	getValue() {
+		return this.value;
+	}
 }
 
 class LessThan {
@@ -248,7 +252,6 @@ class Assign {
 			let newEnvir = Object.assign({}, environment, {
 				[this.name]: this.expression
 			});
-			// console.log("newEnvir " + newEnvir);
 			return [new DoNothing(), newEnvir];
 		}
 	}
@@ -267,13 +270,15 @@ class If {
 	}
 
 	toString() {
-		return `<If ${this.condition} { ${this.consequence} } else { ${this.alternative} }>`;
+		return `<If ( ${this.condition} ) { ${this.consequence} } else { ${this.alternative} }>`;
 	}
 
 	reduce(environment) {
 		if (this.condition.reducible) {
 			return [new If(this.condition.reduce(environment), this.consequence, this.alternative), environment];
-		} else if (this.condition.value == new Boolean('true').value) {
+		} else if (this.condition.getValue() == new Boolean(true).getValue()) {
+			// console.log("THIS.CONSEQUENCE: " + this.consequence);
+			// console.log("THIS.CONSEQUENCE.reduce() " + this.consequence.reduce(environment));
 			return [this.consequence, environment]
 		} else {
 			return [this.alternative, environment]
@@ -306,21 +311,44 @@ class Sequence {
 	}
 }
 
+class While {
+	constructor(condition, body) {
+		this.condition = condition;
+		this.body = body;
+		this.reducible = true;
+	}
+
+	inspect() {
+		return this.toString();
+	}
+
+	toString() {
+		return `<While ( ${this.condition} ) { ${this.body} }>`;
+	}
+
+	reduce(environment) {
+		return [new If(this.condition, new Sequence(this.body, new While(this.condition, this.body)), new DoNothing()), environment];
+
+	}
+}
+
 // Machine
 
 class Machine {
-	constructor(statement, environment) {
+	constructor(statement, environment = {}) {
 		this.statement = statement;
 		this.environment = environment;
 	}
 
 	step() {
-		[this.statement, this.environment] = this.statement.reduce(this.environment)
+		var result = [].concat(this.statement.reduce(this.environment));
+		this.statement = result[0];
+		this.environment = result[1] || this.environment;
 	}
 
 	run() {
 		while (this.statement.reducible) {
-			console.log(this.statement, this.environment);
+			console.log('STATEMENT: ' + this.statement + ' ENVIRON: ', this.environment);
 			this.step();
 		}
 		console.log(this.statement)
@@ -341,5 +369,6 @@ module.exports = {
 	Assign,
 	If,
 	Sequence,
+	While,
 	Machine
 }
