@@ -19,12 +19,21 @@ var sim = require('./SIMPLE/simple.js');
 // var stat = new sim.Add(new sim.Number(12), new sim.Number(14))
 
 
-
+//	//	Assign1
 // x = (x*4)+(12/3)
 
-var statement = new sim.Assign(new sim.Variable("x"), new sim.Add(new sim.Multiply(new sim.Variable("x"), new sim.Number(4)), new sim.Divide(new sim.Number(12), new sim.Number(3))))
-var env = {x: new sim.Number(3)}
+// var statement = new sim.Assign(new sim.Variable("x"), new sim.Add(new sim.Multiply(new sim.Variable("x"), new sim.Number(4)), new sim.Divide(new sim.Number(12), new sim.Number(3))))
+// var env = {
+// 	x: new sim.Number(3)
+// }
 
+//	//	Assign2 (portion that is broken in while example)
+// x = x*3 {x=1}
+
+// var statement = new sim.Assign('x', new sim.Multiply(new sim.Variable("x"), new sim.Number(3)));
+// var env = {
+// 	x: new sim.Number(1)
+// };
 
 // // If 1
 
@@ -57,10 +66,10 @@ var env = {x: new sim.Number(3)}
 
 // while x<5     x = x * 3   {x=1}
 
-// var statement = new sim.While(new sim.LessThan(new sim.Variable("x"), new sim.Number(5)), new sim.Assign(new sim.Variable("x"), new sim.Multiply(new sim.Variable("x"), new sim.Number(3))));
+var statement = new sim.While(new sim.LessThan(new sim.Variable("x"), new sim.Number(5)), new sim.Assign('x', new sim.Multiply(new sim.Variable("x"), new sim.Number(3))));
 
-// var env = {
-// 	'x': new sim.Number(1)
-// }
+var env = {
+	'x': new sim.Number(1)
+}
 
 var mac = new sim.Machine(statement, env).run()
