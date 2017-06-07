@@ -66,10 +66,6 @@ var sim = require('./SIMPLE/simple.js');
 
 // while x<5     x = x * 3   {x=1}
 
-var statement = new sim.While(new sim.LessThan(new sim.Variable("x"), new sim.Number(5)), new sim.Assign('x', new sim.Multiply(new sim.Variable("x"), new sim.Number(3))));
 
-var env = {
-	'x': new sim.Number(1)
-}
 
 var mac = new sim.Machine(statement, env).run()
