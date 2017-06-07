@@ -17,7 +17,7 @@ class Number {
 
 	evalu(environment) {
 		console.log("Number: " + this);
-		return this.value;
+		return this;
 	}
 }
 
@@ -36,8 +36,8 @@ class Add {
 	}
 
 	evalu(environment) {
-		console.log("Addition: " + this.toString(), environment);
-		return (this.left.evalu(environment) + this.right.evalu(environment));
+		console.log("Addition: " + this, environment);
+		return new Number(this.left.evalu(environment).value + this.right.evalu(environment).value);
 	}
 }
 
@@ -56,7 +56,8 @@ class Multiply {
 	}
 
 	evalu(environment) {
-		return (this.left.evalu(environment) * this.right.evalu(environment));
+		console.log("Multiply: " + this, environment);
+		return new Number(this.left.evalu(environment).value * this.right.evalu(environment).value);
 	}
 }
 
@@ -75,7 +76,8 @@ class Subtract {
 	}
 
 	evalu(environment) {
-		return (this.left.evalu(environment) - this.right.evalu(environment));
+		console.log("Subtract: " + this, environment);
+		return new Number(this.left.evalu(environment).value - this.right.evalu(environment).value);
 	}
 }
 
@@ -94,8 +96,8 @@ class Divide {
 	}
 
 	evalu(environment) {
-		console.log("Divide: " + this.toString(), environment);
-		return (this.left.evalu(environment) / this.right.evalu(environment));
+		console.log("Divide: " + this, environment);
+		return new Number(this.left.evalu(environment).value / this.right.evalu(environment).value);
 
 	}
 }
@@ -115,7 +117,8 @@ class Boolean {
 	}
 
 	evalu(environment) {
-		return this.value;
+		console.log("Boolean: " + this, environment)
+		return this;
 	}
 }
 
@@ -134,7 +137,8 @@ class LessThan {
 	}
 
 	evalu(environment) {
-		return (this.left.evalu(environment) < this.right.evalu(environment));
+		console.log("LessThan: " + this, environment);
+		return new Boolean(this.left.evalu(environment).value < this.right.evalu(environment).value);
 	}
 }
 
@@ -153,7 +157,8 @@ class GreaterThan {
 	}
 
 	evalu(environment) {
-		return (this.left.evalu(environment) > this.right.evalu(environment));
+		console.log("GreaterThan: " + this, environment);
+		return new Boolean(this.left.evalu(environment).value > this.right.evalu(environment).value);
 	}
 }
 
@@ -236,7 +241,8 @@ class If {
 	}
 
 	evalu(environment) {
-		if (this.condition.evalu(environment)) {
+		console.log("If: " + this, environment)
+		if (this.condition.evalu(environment).value) {
 			return this.consequence.evalu(environment);
 		} else {
 			return this.alternative.evalu(environment);
@@ -260,7 +266,7 @@ class Sequence {
 
 	evalu(environment) {
 		console.log(this.first.evalu(environment));
-		this.second.evalu(this.first.evalu(environment))
+		return this.second.evalu(this.first.evalu(environment))
 	}
 }
 
@@ -279,8 +285,9 @@ class While {
 	}
 
 	evalu(environment) {
-		if (this.condition.evalu(environment)) {
-			this.evalu(this.body.evalu(environment))
+		console.log("While: " + this, environment);
+		if (this.condition.evalu(environment).value) {
+			return this.evalu(this.body.evalu(environment))
 		} else {
 			return environment;
 		}
