@@ -70,6 +70,24 @@ class DFAMachine {
 	}
 }
 
+class DFADesign {
+	constructor(currentState, acceptedStates, rulebook) {
+		this.currentState = currentState;
+		this.acceptedStates = acceptedStates;
+		this.rulebook = rulebook;
+	}
+
+	toDFA() {
+		return new DFAMachine(this.currentState, this.acceptedStates, this.rulebook);
+	}
+
+	accepts(str) {
+		let dfa = this.toDFA();
+		dfa.readString(str);
+		return dfa.acceptCurrentState();
+	}
+}
+
 
 
 // Implementing above classes
@@ -80,7 +98,8 @@ var rulees = [
 ]
 
 var rb = new DFARulebook(rulees);
-var d = new DFAMachine(1, [3], rb);
+var d = new DFADesign(1, [3], rb);
+var dfa = d.toDFA()
 d.acceptCurrentState();
 // d.readCharacter('b');
 d.readString('aaaabab')
