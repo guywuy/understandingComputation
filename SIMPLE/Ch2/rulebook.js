@@ -11,7 +11,7 @@ class FARule {
 	}
 
 	follow() {
-		return nextState;
+		return this.nextState;
 	}
 
 	inspect() {
@@ -25,13 +25,24 @@ class DFARulebook {
 	}
 
 	getNextState(state, character) {
-		return this.ruleFor(state, character).follow();
+		let rule = this.ruleFor(state, character);
+		// console.log("Rule = " + rule);
+		return rule.follow();
 	}
 
 	ruleFor(state, character) {
+		let matchedRule = null;
 		this.rules.forEach(el => {
-			if (el.appliesTo(state, character)) return el;
-		})
+			if (el.appliesTo(state, character)) {
+				console.log("A match: " + el);
+				matchedRule = el;
+			};
+		});
+		if (matchedRule != null) {
+			return matchedRule;
+		} else {
+			return Error("No matched rule for " + state + character);
+		}
 	}
 }
 
