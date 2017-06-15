@@ -34,24 +34,53 @@ class DFARulebook {
 		let matchedRule = null;
 		this.rules.forEach(el => {
 			if (el.appliesTo(state, character)) {
-				console.log("A match: " + el);
+				console.log("A match: " + el.inspect());
 				matchedRule = el;
 			};
 		});
 		if (matchedRule != null) {
 			return matchedRule;
 		} else {
-			return Error("No matched rule for " + state + character);
+			throw Error("No matched rule for " + state + character);
 		}
 	}
 }
 
+class DFAMachine {
+	constructor(currentState, acceptedStates, rulebook) {
+		this.currentState = currentState;
+		this.acceptedStates = acceptedStates;
+		this.rulebook = rulebook;
+	}
+
+	acceptCurrentState() {
+		return this.acceptedStates.includes(this.currentState);
+	}
+
+	readCharacter(char) {
+		this.currentState = this.rulebook.getNextState(this.currentState, char);
+		console.log(`Current State = ${this.currentState}`);
+	}
+
+	readString(str) {
+		console.log([...str]);
+		[...str].forEach(char => {
+			this.readCharacter(char)
+		});
+	}
+}
+
+
+
+// Implementing above classes
 var rulees = [
 	new FARule(1, 'a', 2), new FARule(1, 'b', 1),
 	new FARule(2, 'a', 2), new FARule(2, 'b', 3),
 	new FARule(3, 'a', 3), new FARule(3, 'b', 3)
 ]
 
-var d = new DFARulebook(rulees);
-
-d.getNextState(1, 'a')
+var rb = new DFARulebook(rulees);
+var d = new DFAMachine(1, [3], rb);
+d.acceptCurrentState();
+// d.readCharacter('b');
+d.readString('aaaabab')
