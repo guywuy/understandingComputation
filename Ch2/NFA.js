@@ -1,3 +1,5 @@
+// http://devdocs.io/javascript/global_objects/set
+
 class FARule {
 	constructor(state, character, nextState) {
 		this.state = state;
@@ -27,13 +29,13 @@ class NFA {
 	}
 
 	acceptable() {
-		// this.acceptStates.forEach(state => {
-		// 	if (this.possibleStates.includes(state)) return true;
-		// });
-		this.possibleStates.some(s => {
-			return this.acceptStates.indexOf(s) >= 0;
+		let acceptableBool = false;
+		this.acceptStates.forEach(state => {
+			if (this.possibleStates.includes(state)) {
+				acceptableBool = true;
+			}
 		});
-		return false;
+		return acceptableBool;
 	}
 
 	readCharacter(char) {
@@ -119,13 +121,6 @@ n.readCharacter('a')
 // }
 
 
-
-// // Implementing above classes
-// var rulees = [
-// 	new FARule(1, 'a', 2), new FARule(1, 'b', 1),
-// 	new FARule(2, 'a', 2), new FARule(2, 'b', 3),
-// 	new FARule(3, 'a', 3), new FARule(3, 'b', 3)
-// ]
 
 // var rb = new DFARulebook(rulees);
 // var d = new DFADesign(1, [3], rb);
