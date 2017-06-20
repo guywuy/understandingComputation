@@ -1,3 +1,5 @@
+//Todo
+// Possibly change from array to set
 // http://devdocs.io/javascript/global_objects/set
 
 class FARule {
@@ -60,12 +62,13 @@ class NFARulebook {
 		let nextStates = [];
 		states.forEach(state => {
 			let matchedRules = this.rulesFor(state, character);
-			matchedRules.forEach(rule => {
-				console.log("rule.follow for each matched rule = " + rule.follow());
-				nextStates.push(rule.follow());
-			});
+			if (matchedRules.length > 0) {
+				matchedRules.forEach(rule => {
+					// console.log("rule.follow for each matched rule = " + rule.follow());
+					nextStates.push(rule.follow());
+				});
+			}
 		});
-		console.log('nextStates - ' + nextStates);
 		return nextStates;
 	}
 
@@ -74,16 +77,29 @@ class NFARulebook {
 		let matchedRules = [];
 		this.rules.forEach(rule => {
 			if (rule.appliesTo(state, character)) {
-				console.log("A match: " + rule.inspect());
+				// console.log("A match: " + rule.inspect());
 				matchedRules.push(rule);
 			};
 		});
-		if (matchedRules.length > 0) {
-			console.log("Matched Rules = " + matchedRules);
-			return matchedRules;
-		} else {
-			throw Error("No matched rule for " + state + character);
-		}
+		return matchedRules;
+	}
+}
+
+class NFADesign {
+	constructor(currentStates, acceptedStates, rulebook) {
+		this.currentStates = currentStates;
+		this.acceptedStates = acceptedStates;
+		this.rulebook = rulebook;
+	}
+
+	toNFA() {
+		return new NFA(this.currentStates, this.acceptedStates, this.rulebook);
+	}
+
+	accepts(str) {
+		let nfa = this.toNFA();
+		nfa.readString(str);
+		return nfa.acceptable();
 	}
 }
 
@@ -96,35 +112,4 @@ var rulees = [
 ];
 var book = new NFARulebook(rulees);
 
-var n = new NFA([1], [4], book);
-
-n.readCharacter('a')
-
-
-
-// class DFADesign {
-// 	constructor(currentState, acceptedStates, rulebook) {
-// 		this.currentState = currentState;
-// 		this.acceptedStates = acceptedStates;
-// 		this.rulebook = rulebook;
-// 	}
-
-// 	toDFA() {
-// 		return new DFAMachine(this.currentState, this.acceptedStates, this.rulebook);
-// 	}
-
-// 	accepts(str) {
-// 		let dfa = this.toDFA();
-// 		dfa.readString(str);
-// 		return dfa.acceptCurrentState();
-// 	}
-// }
-
-
-
-// var rb = new DFARulebook(rulees);
-// var d = new DFADesign(1, [3], rb);
-// var dfa = d.toDFA()
-// d.acceptCurrentState();
-// // d.readCharacter('b');
-// d.readString('aaaabab')
+var n = new NFADesign([1], [4], book);
